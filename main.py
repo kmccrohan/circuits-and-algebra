@@ -6,6 +6,8 @@ import tabulate
 con = None
 librarian_id = None
 
+# -------------------------- Utils --------------------------------
+
 def disconnect():
     global con
     con.close()
@@ -26,6 +28,28 @@ def connect():
         print err
 
 # ----------------------------- Queries ---------------------------
+
+def testCopyAtLocation():
+    print "not done"
+
+def booksCheckedOutByMember():
+    print "not done"
+
+def availableCopiesOfBook():
+    print "not done"
+
+def booksByAuthor():
+    print "not done"
+
+def mostProlificAuthor():
+    print "not done"
+
+def mostProlificCustomer():
+    print "not done"
+
+def copiesPerLibrary():
+    print "not done"
+
 # Returns the integer menu choice
 def displayQueryMenu():
     print "----------------------------------"
@@ -36,7 +60,7 @@ def displayQueryMenu():
     print "4. Find books by a specific author"
     print "5. Find authors that has most books in system"
     print "6. Return customer who has checked out the most books overall"
-    print "7. How many books per library"
+    print "7. How many copis of books per library"
     print "8. Cancel"
     return input("Enter your choice (1-8): ")
 
@@ -44,19 +68,19 @@ def queryControl():
     choice = displayQueryMenu()
     print "-------------------------"
     if choice == 1:
-        print "not done"
+        testCopyAtLocation()
     elif choice == 2:
-        print "not done"
+        booksCheckedOutByMember()
     elif choice == 3:
-        print "not done"
+        availableCopiesOfBook()
     elif choice == 4:
-        print "not done"
+        booksByAuthor()
     elif choice == 5:
-        print "not done"
+        mostProlificAuthor()
     elif choice == 6:
-        print "not done"
+        mostProlificCustomer()
     elif choice == 7:
-        print "not done"
+        copiesPerLibrary()
     elif choice == 8:
         control()
     else:
@@ -64,14 +88,31 @@ def queryControl():
     queryControl()
 
 # --------------------------- Actions -------------------------------
+
+def checkoutCopy():
+    print "not done"
+
+def checkinCopy():
+    print "not done"
+
+# First creates book if book is not defined
+def addCopy():
+    print "not done"
+
+def removeCopy():
+    print "not done"
+
+def registerMember():
+    print "not done"
+
 # Returns the integer menu choice
 def displayMenu():
     print "----------------------------------"
     print "Choose from the following options:"
     print "1. check out a copy"
     print "2. check in a copy"
-    print "3. Add a book or copy of book"
-    print "4. Remove a copy or book"
+    print "3. Add a copy of book"
+    print "4. Remove a copy"
     print "5. Register a new library member"
     print "6. Query information"
     print "7. Exit"
@@ -82,15 +123,15 @@ def control():
     choice = displayMenu()
     print "-------------------------"
     if choice == 1:
-        print "not done"
+        checkoutCopy()
     elif choice == 2:
-        print "not done"
+        checkinCopy()
     elif choice == 3:
-        print "not done"
+        addCopy()
     elif choice == 4:
-        print "not done"
+        removeCopy()
     elif choice == 5:
-        print "not done"
+        registerMember()
     elif choice == 6:
         queryControl()
     elif choice == 7:
