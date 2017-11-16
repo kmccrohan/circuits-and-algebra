@@ -1,6 +1,5 @@
 import mysql.connector
 import config
-import tabulate
 
 # global DB connection
 con = None
