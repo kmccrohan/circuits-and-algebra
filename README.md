@@ -44,6 +44,12 @@ To get the most recent changes from the other person:
 ```
 git pull
 ```
+Then, you may have a weird looking screen show up with `:` all down the left side.
+Type:
+```
+:wq
+```
+Then press `Enter`.
 
 To add your changes:
 ```
