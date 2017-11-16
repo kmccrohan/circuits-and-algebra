@@ -19,7 +19,7 @@ def connect():
         usr = config.mysql['user']
         pwd = config.mysql['password']
         hst = config.mysql['host']
-        dab = 'library_project'
+        dab = config.mysql['database']
         # create a connection
         con = mysql.connector.connect(user=usr,password=pwd, host=hst,
                                       database=dab)

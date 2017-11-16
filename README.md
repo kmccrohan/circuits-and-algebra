@@ -23,7 +23,8 @@ quit
 ```
 mysql = {'host': 'localhost',
          'user': 'root',
-         'password': '<my_password>'}
+         'password': '<my_password>',
+         'database': '<my_database>'}
 ```
 6. Run your python project.
 ```
