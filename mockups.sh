@@ -27,6 +27,9 @@
 # echo "<values entered>"
 # echo "Successful! Member has been created."
 
+echo "Welcome to the library system!"
+echo "Please enter your librarian ID: "
+
 echo "Please select from one of the following query options:"
 echo "1. See if there is a copy of a book at a specific location"
 echo "2. How many books a member currently has checked out"
@@ -35,7 +38,7 @@ echo "4. Find books by a specific author"
 echo "5. Find authors that has most books in system"
 echo "6. Return customer who has checked out the most books overall"
 echo "7. How many books per library"
-echo "8. cancel"
+echo "8. Log out"
 
 echo ""
 echo "Enter values to see if a copy exists at a location: book_id, library_id"
