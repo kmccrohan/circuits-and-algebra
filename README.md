@@ -14,8 +14,8 @@ pip install tabulate
 4. Populate the database.
 ```
 mysql -u root -p
-create database project;
-use database project;
+create database library_project;
+use library_project;
 source populate.sql;
 quit
 ```
@@ -52,6 +52,11 @@ git push
 ```
 When you push, you might get some error saying you need to first `git pull`.
 This is because someone else pushed a change and you need to pull down those changes first before your work can be merged.
+
+To see what files you have changed since last commit:
+```
+git status
+```
 
 If you did something really bad and want to discard your changes and revert to the last commit:
 ```
