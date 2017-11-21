@@ -1,5 +1,6 @@
 import mysql.connector
 import config
+import tabulate
 
 # global DB connection
 con = None
@@ -25,6 +26,17 @@ def connect():
 
     except mysql.connector.Error as err:
         print err
+
+def displayAllRowsForTable(attributes, table):
+    rs = con.cursor()
+    attrString = ','.join(attributes)
+    query = 'SELECT ' + attrString + ' from ' + table
+    rs.execute(query)
+    rows = []
+    for row in rs:
+        rows.append(row)
+    print tabulate.tabulate(rows, headers=attributes)
+    rs.close()
 
 # ----------------------------- Queries ---------------------------
 
@@ -146,6 +158,8 @@ def control():
 def login():
     global librarian_id
     print "Welcome to the library system!"
+    print "Below are the available librarian options:"
+    displayAllRowsForTable(['librarian_id', 'librarian_name'], 'librarian')
     librarian_id = input("Please enter your librarian id: ")
 
 def main():
