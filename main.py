@@ -1,42 +1,9 @@
-import mysql.connector
-import config
 import tabulate
+import query
 
-# global DB connection
-con = None
 librarian_id = None
 
 # -------------------------- Utils --------------------------------
-
-def disconnect():
-    global con
-    con.close()
-
-def connect():
-    global con
-    try:
-        # connection info
-        usr = config.mysql['user']
-        pwd = config.mysql['password']
-        hst = config.mysql['host']
-        dab = config.mysql['database']
-        # create a connection
-        con = mysql.connector.connect(user=usr,password=pwd, host=hst,
-                                      database=dab)
-
-    except mysql.connector.Error as err:
-        print err
-
-def displayAllRowsForTable(attributes, table):
-    rs = con.cursor()
-    attrString = ','.join(attributes)
-    query = 'SELECT ' + attrString + ' from ' + table
-    rs.execute(query)
-    rows = []
-    for row in rs:
-        rows.append(row)
-    print tabulate.tabulate(rows, headers=attributes)
-    rs.close()
 
 # ----------------------------- Queries ---------------------------
 
@@ -147,7 +114,7 @@ def control():
         queryControl()
     elif choice == 7:
         print "Bye..."
-        disconnect()
+        query.disconnect()
         quit()
     else:
         print "Invalid choice!"
@@ -159,11 +126,11 @@ def login():
     global librarian_id
     print "Welcome to the library system!"
     print "Below are the available librarian options:"
-    displayAllRowsForTable(['librarian_id', 'librarian_name'], 'librarian')
+    query.query(['librarian_id', 'librarian_name'], 'librarian')
     librarian_id = input("Please enter your librarian id: ")
 
 def main():
-    connect()
+    query.connect()
     login()
     control()
 
