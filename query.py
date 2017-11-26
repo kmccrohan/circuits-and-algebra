@@ -5,7 +5,7 @@ import config
 # global DB connection
 con = None
 
-def query(attributes, _from, where=None, orderby=None, groupby=None, having=None):
+def query(attributes, _from, where=None, orderby=None, groupby=None, having=None, limit=None):
     rs = con.cursor()
     attrString = ','.join(attributes)
     query = 'SELECT ' + attrString + ' from ' + _from
@@ -17,12 +17,23 @@ def query(attributes, _from, where=None, orderby=None, groupby=None, having=None
         query += ' group by ' + groupby
     if having is not None:
         query += ' having ' + having
+    if limit is not None:
+        query += ' limit ' + str(limit)
     rs.execute(query)
     rows = []
     for row in rs:
         rows.append(row)
-    print tabulate.tabulate(rows, headers=attributes)
+    print tabulate.tabulate(rows, headers=trim_attrs(attributes))
     rs.close()
+
+def trim_attrs(attributes):
+    t_attrs = []
+    for att in attributes:
+        if '.' in att:
+            t_attrs.append(att.split(".",1)[1])
+        else:
+            t_attrs.append(att)
+    return t_attrs
 
 # -- DB connections ---------------
 
