@@ -4,11 +4,33 @@ import query
 librarian_id = None
 
 # -------------------------- Utils --------------------------------
+def selectLibrary():
+    query.print_query(['library_id', 'library_name'], 'library')
+    return input("Please enter the library id: ")
+
+def selectBook():
+    # query.query(['book_id', 'title', 'author'], 'book')
+    # return input("Please enter the book id: ")
+    while True:
+        title = raw_input("What is your book title? ")
+        print "Is one of these the book?"
+        if (query.print_query(['book_id', 'title', 'author'], 'book',
+                        where="title LIKE '%" + title + "%' ")):
+            return input("Please enter your book id: ")
+        else:
+            print "No matching books. Try again."
 
 # ----------------------------- Queries ---------------------------
 
 def testCopyAtLocation():
-    print "not done"
+    library_id = selectLibrary()
+    book_id = selectBook()
+    results = query.query(['book_id', 'library_id'], 'copy',
+                        where=('book_id=%d AND library_id=%d' % (book_id, library_id)))
+    if len(results) > 0:
+        print "There are %d copies of this book at this location." % len(results)
+    else:
+        print "No copies of this book at this location."
 
 def booksCheckedOutByMember():
     print "not done"
@@ -87,12 +109,12 @@ def registerMember():
 def displayMenu():
     print "----------------------------------"
     print "Choose from the following options:"
-    print "1. check out a copy"
-    print "2. check in a copy"
-    print "3. Add a copy of book"
-    print "4. Remove a copy"
-    print "5. Register a new library member"
-    print "6. Query information"
+    print "1. Query information"
+    print "2. check out a copy"
+    print "3. check in a copy"
+    print "4. Add a copy of book"
+    print "5. Remove a copy"
+    print "6. Register a new library member"
     print "7. Exit"
     return input("Enter your choice (1-7): ")
 
@@ -101,17 +123,17 @@ def control():
     choice = displayMenu()
     print "-------------------------"
     if choice == 1:
-        checkoutCopy()
-    elif choice == 2:
-        checkinCopy()
-    elif choice == 3:
-        addCopy()
-    elif choice == 4:
-        removeCopy()
-    elif choice == 5:
-        registerMember()
-    elif choice == 6:
         queryControl()
+    elif choice == 2:
+        checkoutCopy()
+    elif choice == 3:
+        checkinCopy()
+    elif choice == 4:
+        addCopy()
+    elif choice == 5:
+        removeCopy()
+    elif choice == 6:
+        registerMember()
     elif choice == 7:
         print "Bye..."
         query.disconnect()
@@ -125,15 +147,8 @@ def control():
 def login():
     global librarian_id
     print "Welcome to the library system!"
-    while True:
-        name = raw_input("What is your librarian name? ")
-        print "Is one of these you?"
-        if (query.query(['librarian_id', 'librarian_name'], 'librarian',
-                        where="librarian_name LIKE '%" + name + "%' ")):
-            librarian_id = input("Please enter your librarian id: ")
-            return
-        else:
-            print "No matching librarians. Try again."
+    query.print_query(['librarian_id', 'librarian_name'], 'librarian')
+    librarian_id = input("Please enter your librarian id: ")
 
 def main():
     query.connect()

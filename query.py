@@ -5,7 +5,14 @@ import config
 # global DB connection
 con = None
 
-# Returns true if there is at least one result.
+# Returns number of results. Prints if more than 0 results. Same params as query.
+def print_query(*args, **kwargs):
+    rows = query(*args, **kwargs)
+    if len(rows) > 0:
+        print tabulate.tabulate(rows, headers=trim_attrs(args[0]))
+    return len(rows)
+
+# Returns rows of results. Does not print results.
 def query(attributes, _from, where=None, orderby=None, groupby=None, having=None, limit=None):
     rs = con.cursor()
     attrString = ','.join(attributes)
@@ -24,10 +31,8 @@ def query(attributes, _from, where=None, orderby=None, groupby=None, having=None
     rows = []
     for row in rs:
         rows.append(row)
-    if len(rows) > 0:
-        print tabulate.tabulate(rows, headers=trim_attrs(attributes))
     rs.close()
-    return len(rows) > 0
+    return rows
 
 def trim_attrs(attributes):
     t_attrs = []
