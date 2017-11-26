@@ -5,6 +5,7 @@ import config
 # global DB connection
 con = None
 
+# Returns true if there is at least one result.
 def query(attributes, _from, where=None, orderby=None, groupby=None, having=None, limit=None):
     rs = con.cursor()
     attrString = ','.join(attributes)
@@ -23,8 +24,10 @@ def query(attributes, _from, where=None, orderby=None, groupby=None, having=None
     rows = []
     for row in rs:
         rows.append(row)
-    print tabulate.tabulate(rows, headers=trim_attrs(attributes))
+    if len(rows) > 0:
+        print tabulate.tabulate(rows, headers=trim_attrs(attributes))
     rs.close()
+    return len(rows) > 0
 
 def trim_attrs(attributes):
     t_attrs = []

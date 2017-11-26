@@ -125,9 +125,15 @@ def control():
 def login():
     global librarian_id
     print "Welcome to the library system!"
-    print "Below are the available librarian options:"
-    query.query(['librarian_id', 'librarian_name'], 'librarian')
-    librarian_id = input("Please enter your librarian id: ")
+    while True:
+        name = raw_input("What is your librarian name? ")
+        print "Is one of these you?"
+        if (query.query(['librarian_id', 'librarian_name'], 'librarian',
+                        where="librarian_name LIKE '%" + name + "%' ")):
+            librarian_id = input("Please enter your librarian id: ")
+            return
+        else:
+            print "No matching librarians. Try again."
 
 def main():
     query.connect()
