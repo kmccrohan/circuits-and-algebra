@@ -20,12 +20,16 @@ def selectBook():
         else:
             print "No matching books. Try again."
 
+def selectMember():
+    query.print_query(['member_id', 'member_name'], 'member')
+    return input("Please enter the member id: ")
+
 # ----------------------------- Queries ---------------------------
 
 def testCopyAtLocation():
     library_id = selectLibrary()
     book_id = selectBook()
-    results = query.query(['book_id', 'library_id'], 'copy',
+    results = query.query(['book_id'], 'copy',
                         where=('book_id=%d AND library_id=%d' % (book_id, library_id)))
     if len(results) > 0:
         print "There are %d copies of this book at this location." % len(results)
@@ -33,7 +37,10 @@ def testCopyAtLocation():
         print "No copies of this book at this location."
 
 def booksCheckedOutByMember():
-    print "not done"
+    member_id = selectMember()
+    results = query.query(['member_id'], 'checkout',
+                        where=('member_id=%d AND checkin_date IS NULL' % member_id))
+    print "This member currently has %d books checked out." % len(results)
 
 def availableCopiesOfBook():
     print "not done"
