@@ -43,7 +43,20 @@ def booksCheckedOutByMember():
     print "This member currently has %d books checked out." % len(results)
 
 def availableCopiesOfBook():
-    print "not done"
+#  query.print_query(['book_id', 'checkin_date', 'title', 'library_name'],'book JOIN copy USING (book_id) JOIN checkout USING (copy_id) JOIN library USING (library_id)',
+#       where=('checkin_date IS NOT NULL'))
+
+    book_id = selectBook()
+    results = query.query(['library_name'],'book JOIN copy USING (book_id) JOIN checkout USING (copy_id) JOIN library USING (library_id)',
+			where=('book_id = %d AND checkin_date IS NOT NULL' % book_id))
+
+    if len(results) > 1:
+       print "There are %d copies of this book available. \nThey can be found at the following locations: " % len(results)
+       query.print_query(['library_name'],'book JOIN copy USING (book_id) JOIN checkout USING (copy_id) JOIN library USING (library_id)',
+            where=('book_id = %d' % book_id))
+    else:
+        print "No copies of this book are currently available."
+
 
 def booksByAuthor():
     print "not done"
@@ -67,7 +80,7 @@ def displayQueryMenu():
     print "4. Find books by a specific author"
     print "5. Find authors that has most books in system"
     print "6. Return customer who has checked out the most books overall"
-    print "7. How many copis of books per library"
+    print "7. How many copies of books per library"
     print "8. Cancel"
     return input("Enter your choice (1-8): ")
 
@@ -118,7 +131,7 @@ def displayMenu():
     print "Choose from the following options:"
     print "1. Query information"
     print "2. check out a copy"
-    print "3. check in a copy"
+    print "3. check in a copy" 
     print "4. Add a copy of book"
     print "5. Remove a copy"
     print "6. Register a new library member"
