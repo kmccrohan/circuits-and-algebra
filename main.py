@@ -45,15 +45,13 @@ def booksCheckedOutByMember():
 def availableCopiesOfBook():
 #  query.print_query(['book_id', 'checkin_date', 'title', 'library_name'],'book JOIN copy USING (book_id) JOIN checkout USING (copy_id) JOIN library USING (library_id)',
 #       where=('checkin_date IS NOT NULL'))
-
     book_id = selectBook()
     results = query.query(['library_name'],'book JOIN copy USING (book_id) JOIN checkout USING (copy_id) JOIN library USING (library_id)',
 			where=('book_id = %d AND checkin_date IS NOT NULL' % book_id))
 
-    if len(results) > 1:
+    if len(results) > 0:
        print "There are %d copies of this book available. \nThey can be found at the following locations: " % len(results)
-       query.print_query(['library_name'],'book JOIN copy USING (book_id) JOIN checkout USING (copy_id) JOIN library USING (library_id)',
-            where=('book_id = %d' % book_id))
+       query.print_results(results, ['library_name'])
     else:
         print "No copies of this book are currently available."
 
@@ -131,7 +129,7 @@ def displayMenu():
     print "Choose from the following options:"
     print "1. Query information"
     print "2. check out a copy"
-    print "3. check in a copy" 
+    print "3. check in a copy"
     print "4. Add a copy of book"
     print "5. Remove a copy"
     print "6. Register a new library member"

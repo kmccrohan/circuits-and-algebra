@@ -9,8 +9,11 @@ con = None
 def print_query(*args, **kwargs):
     rows = query(*args, **kwargs)
     if len(rows) > 0:
-        print tabulate.tabulate(rows, headers=trim_attrs(args[0]))
+        print_results(rows, args[0])
     return len(rows)
+
+def print_results(rows, attrs):
+    print tabulate.tabulate(rows, headers=trim_attrs(attrs))
 
 # Returns rows of results. Does not print results.
 def query(attributes, _from, where=None, orderby=None, groupby=None, having=None, limit=None):
