@@ -20,7 +20,7 @@ CREATE TABLE `librarian` (
   `library_id` int NOT NULL,
   `librarian_name` varchar(50) NOT NULL,
   PRIMARY KEY (`librarian_id`),
-  FOREIGN KEY (`library_id`) REFERENCES `library` (`library_id`)
+  FOREIGN KEY (`library_id`) REFERENCES `library` (`library_id`) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE `book` (
@@ -35,8 +35,8 @@ CREATE TABLE `copy` (
   `library_id` int NOT NULL,
   `book_id` int NOT NULL,
   PRIMARY KEY (`copy_id`),
-  FOREIGN KEY (`library_id`) REFERENCES `library` (`library_id`),
-  FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`)
+  FOREIGN KEY (`library_id`) REFERENCES `library` (`library_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE `member` (
@@ -54,9 +54,9 @@ CREATE TABLE `checkout` (
   `checkout_date` DATE NOT NULL,
   `checkin_date` DATE,
   PRIMARY KEY (`librarian_id`, `copy_id`, `member_id`, `checkout_date`),
-  FOREIGN KEY (`librarian_id`) REFERENCES `librarian` (`librarian_id`),
-  FOREIGN KEY (`member_id`) REFERENCES `member` (`member_id`),
-  FOREIGN KEY (`copy_id`) REFERENCES `copy` (`copy_id`)
+  FOREIGN KEY (`librarian_id`) REFERENCES `librarian` (`librarian_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`member_id`) REFERENCES `member` (`member_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`copy_id`) REFERENCES `copy` (`copy_id`) ON DELETE CASCADE
 ) ENGINE = InnoDB;
 
 INSERT INTO `library` (`library_name`, `address`, `phone`) VALUES

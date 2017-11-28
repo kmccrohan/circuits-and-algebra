@@ -61,7 +61,8 @@ def booksCheckedOutByMember():
 # Displays the libraries where copies of a specific book are available
 def availableCopiesOfBook():
     book_id = selectBook()
-    results = query.query(['copy_id', 'library_name'],'book JOIN copy USING (book_id) JOIN checkout USING (copy_id) JOIN library USING (library_id)',
+    results = query.query(['copy_id', 'library_name'],
+            'book JOIN copy USING (book_id) JOIN checkout USING (copy_id) JOIN library USING (library_id)',
 			where=('book_id = %d AND checkin_date IS NOT NULL' % book_id))
 
     # only display the list if the list isn't empty; otherwise, return an error
@@ -170,7 +171,18 @@ def addCopy():
 
 # Removes a copy of a book from the database
 def removeCopy():
-    print "not done"
+    title = raw_input("What is the title of this book? ")
+    author = raw_input("Who is the author? ")
+    results = query.query(['copy_id','library_name','title','author'],
+                'book JOIN copy USING (book_id) JOIN library USING (library_id)',
+                where="author LIKE '%" + author + "%' AND title LIKE '%" + title + "%' ")
+    if len(results) == 0:
+        print "No copies of such a book found."
+        return
+    query.print_results(results, ['copy_id','library_name','title','author'])
+    copy_id = input("Enter copy id: ")
+    query.delete_copy(copy_id)
+    print "Copy deleted!"
 
 # Enters a new member into the database
 def registerMember():

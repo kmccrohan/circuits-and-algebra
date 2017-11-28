@@ -21,6 +21,14 @@ def add_book(title, author):
     con.commit()
     return rs.lastrowid
 
+# -------------------------- DELETE ------------------------------------
+# Deletes the specified copy.
+def delete_copy(copy_id):
+    delete = "DELETE FROM `copy` WHERE copy_id=%d" % copy_id
+    rs = con.cursor()
+    rs.execute(delete)
+    con.commit()
+
 # -------------------------- SELECT ------------------------------------
 
 # Returns number of results. Prints if more than 0 results. Same params as query.
