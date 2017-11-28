@@ -87,13 +87,13 @@ def booksByAuthor():
 # Returns the author who has the most number of books in the system
 def mostProlificAuthor():
     print "Most prolific author(s) by # books written:"
-    results = query.print_query(['COUNT(*)','author'], 'book', groupby='author',
+    query.print_query(['COUNT(*)','author'], 'book', groupby='author',
         having='COUNT(*) >= ALL (SELECT COUNT(*) FROM book GROUP BY author)')
 
 # Returns the customer who has the most number of books checked out on their account
 def mostProlificCustomer():
     print "Most prolific customer(s) by # books checked out:"
-    results = query.print_query(['COUNT(*)','member_name'], 'checkout JOIN member USING (member_id)',
+    query.print_query(['COUNT(*)','member_name'], 'checkout JOIN member USING (member_id)',
         groupby='member_id, member_name',
         having='COUNT(*) >= ALL (SELECT COUNT(*) FROM checkout GROUP BY member_id)')
 
@@ -151,7 +151,22 @@ def checkinCopy():
 
 # First creates book if book is not defined
 def addCopy():
-    print "not done"
+    title = raw_input("What is the title of this book? ")
+    author = raw_input("Who is the author? ")
+    library_id = selectLibrary()
+    results = query.query(['book_id','title','author'], 'book',
+                where="author LIKE '%" + author + "%' AND title LIKE '%" + title + "%' ")
+    if len(results) > 0:
+        query.print_results(results, ['book_id','title','author'])
+        copy = raw_input("Do you want to add a copy of one of these book(s)? (y/n)")
+        if copy == 'y':
+            book_id = input("Enter book id: ")
+            query.add_copy(book_id, library_id)
+            print "Copy added!"
+            return
+    book_id = query.add_book(title, author)
+    query.add_copy(book_id, library_id)
+    print "Book created and copy added!"
 
 # Removes a copy of a book from the database
 def removeCopy():

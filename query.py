@@ -5,6 +5,24 @@ import config
 # global DB connection
 con = None
 
+# --------------------------- INSERT ----------------------------------
+# Adds a copy to the database
+def add_copy(book_id, library_id):
+    insert = "INSERT INTO `copy` (`library_id`, `book_id`) VALUES ('%s', '%s')" % (library_id, book_id)
+    rs = con.cursor()
+    rs.execute(insert)
+    con.commit()
+
+# Adds a book to the database. Returns the book_id of the newly created book.
+def add_book(title, author):
+    insert = "INSERT INTO `book` (`title`, `author`) VALUES ('%s', '%s')" % (title, author)
+    rs = con.cursor()
+    rs.execute(insert)
+    con.commit()
+    return rs.lastrowid
+
+# -------------------------- SELECT ------------------------------------
+
 # Returns number of results. Prints if more than 0 results. Same params as query.
 def print_query(*args, **kwargs):
     rows = query(*args, **kwargs)
