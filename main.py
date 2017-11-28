@@ -92,7 +92,10 @@ def mostProlificAuthor():
 
 # Returns the customer who has the most number of books checked out on their account
 def mostProlificCustomer():
-    print "not done"
+    print "Most prolific customer(s) by # books checked out:"
+    results = query.print_query(['COUNT(*)','member_name'], 'checkout JOIN member USING (member_id)',
+        groupby='member_id, member_name',
+        having='COUNT(*) >= ALL (SELECT COUNT(*) FROM checkout GROUP BY member_id)')
 
 # Returns the number of books at a specific library
 def copiesPerLibrary():
