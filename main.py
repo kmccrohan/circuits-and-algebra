@@ -11,8 +11,6 @@ def selectLibrary():
 
 # Helper function for selecting a book ID
 def selectBook():
-    # query.query(['book_id', 'title', 'author'], 'book')
-    # return input("Please enter the book id: ")
     while True:
         title = raw_input("What is your book title? ")
         print "Is one of these books?"
@@ -32,7 +30,7 @@ def selectAuthor():
     while True:
         author = raw_input("What is the name of the author? ")
         print "Is it one of these authors?"
-        if (query.print_query(['author'], 'book',
+        if (query.print_query(['DISTINCT author'], 'book',
                         where="author LIKE '%" + author + "%' ")):
             return raw_input("Please type the author name exactly as it appears above: ")
         else:
@@ -46,7 +44,7 @@ def testCopyAtLocation():
     book_id = selectBook()
     results = query.query(['book_id'], 'copy',
                         where=('book_id=%d AND library_id=%d' % (book_id, library_id)))
-   
+
     # only display the list if the list isn't empty; otherwise, return an error
     if len(results) > 0:
         print "There are %d copies of this book at this location." % len(results)
@@ -63,13 +61,13 @@ def booksCheckedOutByMember():
 # Displays the libraries where copies of a specific book are available
 def availableCopiesOfBook():
     book_id = selectBook()
-    results = query.query(['library_name'],'book JOIN copy USING (book_id) JOIN checkout USING (copy_id) JOIN library USING (library_id)',
+    results = query.query(['copy_id', 'library_name'],'book JOIN copy USING (book_id) JOIN checkout USING (copy_id) JOIN library USING (library_id)',
 			where=('book_id = %d AND checkin_date IS NOT NULL' % book_id))
 
     # only display the list if the list isn't empty; otherwise, return an error
     if len(results) > 0:
        print "There are %d copies of this book available. \nThey can be found at the following locations: " % len(results)
-       query.print_results(results, ['library_name'])
+       query.print_results(results, ['copy_id', 'library_name'])
     else:
         print "No copies of this book are currently available."
 
@@ -88,7 +86,9 @@ def booksByAuthor():
 
 # Returns the author who has the most number of books in the system
 def mostProlificAuthor():
-    print "not done"
+    print "Most prolific author(s) by # books written:"
+    results = query.print_query(['COUNT(*)','author'], 'book', groupby='author',
+        having='COUNT(*) >= ALL (SELECT COUNT(*) FROM book GROUP BY author)')
 
 # Returns the customer who has the most number of books checked out on their account
 def mostProlificCustomer():
