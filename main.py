@@ -36,6 +36,12 @@ def selectAuthor():
         else:
             print "No matching authors. Try again."
 
+# Returns results for available copies of book id
+def getAvailableCopies(book_id):
+    return query.query(['copy_id', 'library_name'],
+            'book JOIN copy USING (book_id) JOIN library USING (library_id)',
+			where=('book_id = %d AND copy_id != ALL (SELECT copy_id FROM checkout WHERE checkin_date IS NULL)' % book_id))
+
 # ----------------------------- Queries ---------------------------
 
 # Checks to see if a copy of a book is available at a specific library
@@ -61,9 +67,7 @@ def booksCheckedOutByMember():
 # Displays the libraries where copies of a specific book are available
 def availableCopiesOfBook():
     book_id = selectBook()
-    results = query.query(['copy_id', 'library_name'],
-            'book JOIN copy USING (book_id) JOIN checkout USING (copy_id) JOIN library USING (library_id)',
-			where=('book_id = %d AND checkin_date IS NOT NULL' % book_id))
+    results = getAvailableCopies(book_id)
 
     # only display the list if the list isn't empty; otherwise, return an error
     if len(results) > 0:
@@ -144,15 +148,24 @@ def queryControl():
 
 # Allows the user to check out a copy of a book to a member
 def checkoutCopy():
-    print "not done"
+    book_id = selectBook()
+    results = getAvailableCopies(book_id)
+    if len(results) == 0:
+        print "No available copies of this book. Sorry"
+        return
+    query.print_results(results, ['copy_id', 'library_name'])
+    copy_id = input("Enter copy id of copy you would like to check out: ")
+    member_id = selectMember()
+    date = raw_input("Enter checkout date (YYYY-MM-DD): ")
+    query.checkout_copy(librarian_id, copy_id, member_id, date)
+    print "Book checked out!"
 
 # Allows the user to check in a copy of a book
 def checkinCopy():
     title = raw_input("What is the title of this book? ")
-    author = raw_input("Who is the author? ")
     results = query.query(['copy_id','title','author'],
                 'copy JOIN book USING (book_id) JOIN checkout USING (copy_id)',
-                where="author LIKE '%" + author + "%' AND title LIKE '%" + title + "%' AND checkin_date is NULL")
+                where="title LIKE '%" + title + "%' AND checkin_date is NULL")
     if len(results) == 0:
         print "No matching books checked out."
         return

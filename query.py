@@ -20,6 +20,14 @@ def add_book(title, author):
     rs.execute(insert)
     con.commit()
     return rs.lastrowid
+
+# Adds a checkout to the database. Returns the book_id of the newly created book.
+def checkout_copy(librarian_id, copy_id, member_id, checkout_date):
+    insert = "INSERT INTO `checkout` VALUES ('%s', '%s', '%s', '%s', NULL)" % (librarian_id, copy_id, member_id, checkout_date)
+    rs = con.cursor()
+    rs.execute(insert)
+    con.commit()
+
 # --------------------------- UPDATE ----------------------------------
 # Updates the checkin date to be not null.
 def checkin_copy(copy_id, date):
