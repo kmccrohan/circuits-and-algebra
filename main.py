@@ -119,9 +119,6 @@ def copiesPerLibrary():
         query.print_results(results, ['Total # of Books'])
     else:
 	print "Error!"
-    
-
-print "not done"
 
 # Returns the integer menu choice
 def displayQueryMenu():
@@ -228,7 +225,11 @@ def removeCopy():
 
 # Enters a new member into the database
 def registerMember():
-    print "not done"
+    member_name = raw_input("What is the name of the new member? ")
+    address = raw_input("What is their address? ")
+    phone = raw_input("What is their phone number (with area code)? ")
+    query.add_member(member_name, address, phone)
+    print "Member added!"
 
 # Returns the integer menu choice
 def displayMenu():

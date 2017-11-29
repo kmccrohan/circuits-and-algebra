@@ -28,6 +28,13 @@ def checkout_copy(librarian_id, copy_id, member_id, checkout_date):
     rs.execute(insert)
     con.commit()
 
+# Adds a member to the database
+def add_member(member_name, address, phone):
+    insert = "INSERT INTO `member` (`member_name`, `address`, `phone`) VALUES ('%s', '%s', '%s')" % (member_name, address, phone)
+    rs = con.cursor()
+    rs.execute(insert)
+    con.commit()
+
 # --------------------------- UPDATE ----------------------------------
 # Updates the checkin date to be not null.
 def checkin_copy(copy_id, date):
