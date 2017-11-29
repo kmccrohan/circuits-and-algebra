@@ -20,6 +20,13 @@ def add_book(title, author):
     rs.execute(insert)
     con.commit()
     return rs.lastrowid
+# --------------------------- UPDATE ----------------------------------
+# Updates the checkin date to be not null.
+def checkin_copy(copy_id, date):
+    update = "UPDATE checkout SET checkin_date='%s' WHERE copy_id=%d AND checkin_date IS NULL" % (date, copy_id)
+    rs = con.cursor()
+    rs.execute(update)
+    con.commit()
 
 # -------------------------- DELETE ------------------------------------
 # Deletes the specified copy.

@@ -148,7 +148,19 @@ def checkoutCopy():
 
 # Allows the user to check in a copy of a book
 def checkinCopy():
-    print "not done"
+    title = raw_input("What is the title of this book? ")
+    author = raw_input("Who is the author? ")
+    results = query.query(['copy_id','title','author'],
+                'copy JOIN book USING (book_id) JOIN checkout USING (copy_id)',
+                where="author LIKE '%" + author + "%' AND title LIKE '%" + title + "%' AND checkin_date is NULL")
+    if len(results) == 0:
+        print "No matching books checked out."
+        return
+    query.print_results(results, ['copy_id','title','author'])
+    copy_id = input("Enter copy id of copy you would like to check in: ")
+    date = raw_input("Enter checkin date (YYYY-MM-DD): ")
+    query.checkin_copy(copy_id, date)
+    print "Book checked in!"
 
 # First creates book if book is not defined
 def addCopy():
