@@ -110,7 +110,18 @@ def mostProlificCustomer():
 
 # Returns the number of books at a specific library
 def copiesPerLibrary():
-    print "not done"
+    library = selectLibrary();
+    results = query.query(['COUNT(*)'], 'copy', where = ('library_id = %d ' %library),groupby='library_id')
+	
+    # only display the list if the list isn't empty; otherwise, return an error
+    if len(results) > 0:
+	print "\nHere is the current total of books at the requested library:"
+        query.print_results(results, ['Total # of Books'])
+    else:
+	print "Error!"
+    
+
+print "not done"
 
 # Returns the integer menu choice
 def displayQueryMenu():
