@@ -22,8 +22,14 @@ def selectBook():
 
 # Helper function for selecting a member ID
 def selectMember():
-    query.print_query(['member_id', 'member_name'], 'member')
-    return input("Please enter the member id: ")
+     while True:
+        member_name = raw_input("What is the member's name? ")
+        print "Is one of these members?"
+        if (query.print_query(['member_id', 'member_name'], 'member',
+                        where="member_name LIKE '%" + member_name + "%' ")):
+            return input("Please enter the member id: ")
+        else:
+            print "No matching members. Try again."
 
 # Helper function for selecting an author
 def selectAuthor():
